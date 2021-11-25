@@ -1,0 +1,13 @@
+- view the packages that are installed (view while the environment is active): pip freeze  
+- run python scripts on cmd: python nameofscript.py in C:\Users\BeatrizCarvalho\AppData\Local\Programs\Python\Python39\Scripts
+- jupyter notebooks: 1. instalar jupyter; 2. pip install ipykernel a partir de C:\Users\BeatrizCarvalho\Documents\Modelo; 3. ipython kernel install —user —name=<projectname>
+- produce a requirements file: pip freeze > requirements.txt
+- installing packages: py -m pip install nameofpackage
+
+Extensões:
+- pandas
+- numpy
+- tensorflow
+- nltk
+- gensim
+- scipy
