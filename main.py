@@ -1,12 +1,15 @@
+# usar 2 bookmark dicionario - onde associo um nmr a string que quero
+# usar 1 bookmark criar dataframe para juntar colunas convertidas e nao convertidas, ficam em vetor np array. array com varios arrays com cada array pequeno tem as strings de cada coluna
+# ver crossvalidation
+
 #-----------------------------------------pre-processamento---------------------------------------------------#
 
 from nltk.tokenize import word_tokenize
 from nltk import sent_tokenize
+import pandas as pd
 
 #carregar ficheiro 
-file = open('dados.csv')
-text = file.read()
-file.close()
+text = pd.read_csv('dados.csv')
 
 #converter numeros para classes - le o csv para uma classe com cada linha do csv sendo uma instancia da classe
 import csv
@@ -95,6 +98,9 @@ data2vec = w2v.Word2Vec(
     window = 8, #palavras antes e depois de uma dada palavra
     sample = 1e-4 #limiar para o qual palavras que ocorrem com alta frequência são down-sampled
 )
+
+#passar dicionario linha 105, cria um vetor com nmrs que faz para representar cada plavra. criar um dicionario - vetores numericos para cada palavra
+#com base nos vetores de nmrs que representam cada plavra o modelo é treinado
 
 #criacao vocabulario
 data2vec.build_vocab(dadosmodelo)

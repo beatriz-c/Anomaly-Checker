@@ -4,10 +4,14 @@
 - produce a requirements file: pip freeze > requirements.txt
 - installing packages: py -m pip install nameofpackage
 
-Extensões:
-- pandas
-- numpy
-- tensorflow
-- nltk
-- gensim
-- scipy
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Pandas.cut()
+- leitura do intervalo: (18, 25] - não inclui o 18 mas inclui o 25 -> right = True por default
+- para mudar a precisão de leitura de nmrs decimais -> precision -> por default é 3 casas decimais
+
+Dados
+- print(predados.iloc[19:30,:])  #rows, columns
+- 29.051.438 milhões de linhas; 93 colunas; tipo de dados int64
+- predados.info()
+- print(predados.shape)
