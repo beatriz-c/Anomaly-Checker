@@ -13,7 +13,6 @@
 #-----------------------------------------pre-processamento---------------------------------------------------#
 
 #carregar dados
-from cProfile import run
 import pandas as pd
 from pandas.core.frame import DataFrame
 predados = pd.read_csv('traindata.csv', nrows = 1000)

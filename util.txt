@@ -12,6 +12,6 @@ Pandas.cut()
 
 Dados
 - print(predados.iloc[19:30,:])  #rows, columns
-- 29.051.438 milhões de linhas; 93 colunas; tipo de dados int64
+- 29 051 438 milhões de linhas; 93 colunas; tipo de dados int64 -> 2 701 783 734
 - predados.info()
 - print(predados.shape)
