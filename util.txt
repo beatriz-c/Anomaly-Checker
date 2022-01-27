@@ -15,3 +15,6 @@ Dados
 - 29 051 438 milhões de linhas; 93 colunas; tipo de dados int64 -> 2 701 783 734
 - predados.info()
 - print(predados.shape)
+
+Word2vec
+- vector for the word king - vec_king = wv['king']
