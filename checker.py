@@ -1,11 +1,7 @@
-
-
 #-----------------------------------------pre-processing---------------------------------------------------#
 
 #data loading
 import pandas as pd
-from pandas.core.frame import DataFrame
-from sklearn import metrics
 predata = pd.read_csv('traindata.csv', nrows = 1000) #aumentar nrows até rebentar
 
 #delete unnecessary columns
@@ -22,7 +18,7 @@ import numpy as np
 import string
 
 class LabelCategorizer():
-    def __init__(self, base_word = 'gato'):
+    def __init__(self, base_word = 'cat'):
         self._alphabet_index = 0
         self.base_word = base_word
         self.current_word = self.base_word
@@ -79,27 +75,37 @@ for i in range (len(columns)):
 #amount_over_account_balance (float) n87 -> min, max = -1726484.0; 150000000.0
 
 
-
-#---------------------------------------------------training------------------------------------------------------#
-
 #dataframe to numpy array of arrays
 listoflists = predata.reset_index().to_numpy() #list of lists
 
-#converting numbers to words
-sentences = [str(int) for int in listoflists]
+#converting the rest of the numbers to words
+bigrecords = [str(int) for int in listoflists]
+
+#setting all to lower case
+sentences_lc = [w.lower() for w in bigrecords]         
+
+#replace new line characters with space
+sentences = [k.replace('\n','') for k in sentences_lc]
+
+#print(sentences)
+
+
+
+#---------------------------------------------------training------------------------------------------------------#
 
 #inicialization and training word2vec
 import gensim.models.word2vec as w2v
 import multiprocessing
 
-def training (sentences, cycles ,dim, architecture, context):
+def training (sentences, cycles, dim, architecture, context):
     model = w2v.Word2Vec (
         sg = architecture, #1 - skip-gram , 0 - cbow
         workers = multiprocessing.cpu_count(), #uses all the cores 
-        vector_size = dim, #dimension of the embedding space
+        vector_size = dim, #dimension of the embedding space = N
         window = context, #words befores and after center word
-        hs = 0, #0 - negative sampling optimization , 1 - hierarchical softmax
-        sample = 0, #whithout subsampling  
+        sample = 0, #whithout downsampling 
+        ns_exponent = 0.0,
+        min_count = 0,
 )
     
     #vocabulary creation
@@ -107,19 +113,52 @@ def training (sentences, cycles ,dim, architecture, context):
 
     #model training
     model.train(sentences, epochs = cycles, total_examples = model.corpus_count, 
-    start_alpha = 0.01, end_alpha = 0.0005, compute_loss = True)
+    compute_loss = True)
 
     return model
 
 #model creation
-model = training(sentences, 10, 300, 1, 5)
+model = training(sentences, 10, 10, 1, 5)
 
-#metrics
-#loss after each epoch
-#accuracy
-
+#print(len(model.wv.index_to_key)) #vocab size = V
 
 #saving the model
 model.save('Trained.w2v')
 
-#print(listoflists)
+
+
+#-------------------------------------------------matrices--------------------------------------------------------#
+
+#weight matrices
+m1 = model.wv.vectors  #input embedding matrix  #VxN
+m2 = model.syn1neg      #NxV     
+
+print(m1.shape, m2.shape)
+
+#print(np.matrix(m1))
+print()
+print()
+#print(np.matrix(m2))
+
+m3 = np.transpose(m2)
+#print(m3.shape)
+
+#condicional probabilities
+#probabilities = np.matmul(m1, m3)
+
+#print(probabilities.shape)
+#print(np.matrix(probabilities))
+
+
+
+#-------------------------------------------------evaluating------------------------------------------------------#
+
+#loss
+loss = model.get_latest_training_loss()
+#print('Loss: {}'.format(loss))
+
+#memory used
+memoryused = model.estimate_memory()
+#print(memoryused)
+
+#accuracy
